@@ -1,16 +1,16 @@
 namespace TaskMasterApp.Models
 {
     /// <summary>
-    /// Represents a single todo task with title, status, and optional due date.
+    /// Represents a single todo item with title, status, and optional due date.
     /// </summary>
-    public class Task
+    public class Todo
     {
         public Guid Id { get; set; }
         public string Title { get; set; }
         public bool IsCompleted { get; set; }
         public DateTime? DueDate { get; set; }
 
-        public Task(string title, DateTime? dueDate = null)
+        public Todo(string title, DateTime? dueDate = null)
         {
             Id = Guid.NewGuid();
             Title = title;

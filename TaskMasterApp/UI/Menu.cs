@@ -1,12 +1,12 @@
 using System;
 using TaskMasterApp.Services;
-using ModelTask = TaskMasterApp.Models.Task;
+using TaskMasterApp.Models;
 
 namespace TaskMasterApp.UI
 {
     public static class Menu
     {
-        public static void Start(TaskRepository repository)
+        public static void Start(TodoRepository repository)
         {
             bool exit = false;
 
@@ -14,8 +14,8 @@ namespace TaskMasterApp.UI
             {
                 Console.Clear();
                 Console.WriteLine("📝 Task Master");
-                Console.WriteLine("1. Add a task");
-                Console.WriteLine("2. View all tasks");
+                Console.WriteLine("1. Add a todo");
+                Console.WriteLine("2. View all todos");
                 Console.WriteLine("0. Exit");
                 Console.Write("\nChoose an option: ");
 
@@ -24,10 +24,10 @@ namespace TaskMasterApp.UI
                 switch (choice)
                 {
                     case "1":
-                        AddTaskFlow(repository);
+                        AddTodoFlow(repository);
                         break;
                     case "2":
-                        ViewTasksFlow(repository);
+                        ViewTodosFlow(repository);
                         break;
                     case "0":
                         exit = true;
@@ -40,27 +40,26 @@ namespace TaskMasterApp.UI
             }
         }
 
-        private static void AddTaskFlow(TaskRepository repository)
+        private static void AddTodoFlow(TodoRepository repository)
         {
-            Console.Write("Enter task title: ");
+            Console.Write("Enter todo title: ");
             string title = Console.ReadLine() ?? "Untitled";
 
-            var task = new ModelTask(title: "New Task");
+            var todo = new Todo(title);
+            repository.AddTodo(todo);
 
-            repository.AddTask(task);
-
-            Console.WriteLine("Task added! Press Enter to continue...");
+            Console.WriteLine("Todo added! Press Enter to continue...");
             Console.ReadLine();
         }
 
-        private static void ViewTasksFlow(TaskRepository repository)
+        private static void ViewTodosFlow(TodoRepository repository)
         {
-            var tasks = repository.GetAllTasks();
+            var todos = repository.GetAllTodos();
 
-            Console.WriteLine("\nYour Tasks:");
-            foreach (var task in tasks)
+            Console.WriteLine("\nYour Todos:");
+            foreach (var todo in todos)
             {
-                Console.WriteLine($"- {task.Title}");
+                Console.WriteLine($"- {todo.Title}");
             }
 
             Console.WriteLine("\nPress Enter to continue...");
