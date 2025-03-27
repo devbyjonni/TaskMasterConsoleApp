@@ -1,6 +1,7 @@
 using System;
 using TaskMasterApp.Services;
 using TaskMasterApp.UI;
+using TaskMasterApp.Data;
 
 namespace TaskMasterConsoleApp
 {
@@ -8,8 +9,11 @@ namespace TaskMasterConsoleApp
     {
         public static void Main()
         {
-            var repository = new TodoRepository();
+
+            var storage = new JsonTodoStorage();
+            var repository = new TodoRepository(storage);
             Menu.Start(repository, Console.In, Console.Out);
+
         }
     }
 }

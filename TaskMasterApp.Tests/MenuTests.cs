@@ -14,7 +14,8 @@ namespace TaskMasterApp.Tests
         public void ViewTasksFlow_Should_Mark_Task_As_Completed()
         {
             // Arrange
-            var repo = new TodoRepository();
+            var fakeStorage = new FakeInMemoryStorage();
+            var repo = new TodoRepository(fakeStorage);
             var todo = new Todo("Test Me");
             repo.AddTodo(todo);
 
