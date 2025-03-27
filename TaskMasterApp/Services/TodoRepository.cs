@@ -17,6 +17,14 @@ namespace TaskMasterApp.Services
             return _todos;
         }
 
+        public void MarkTodoAsCompleted(Guid id)
+        {
+            var todo = _todos.FirstOrDefault(t => t.Id == id);
+            if (todo != null && !todo.IsCompleted)
+            {
+                todo.IsCompleted = true;
+            }
+        }
         // Placeholder for future features:
         // public void RemoveTodo(Guid id) { ... }
         // public void UpdateTodo(Todo updatedTodo) { ... }

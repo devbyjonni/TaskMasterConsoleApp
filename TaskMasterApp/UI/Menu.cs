@@ -1,69 +1,92 @@
 using System;
-using TaskMasterApp.Services;
+using System.IO;
 using TaskMasterApp.Models;
+using TaskMasterApp.Services;
 
 namespace TaskMasterApp.UI
 {
     public static class Menu
     {
-        public static void Start(TodoRepository repository)
+        public static void Start(TodoRepository repository, TextReader input, TextWriter output)
         {
             bool exit = false;
 
             while (!exit)
             {
-                Console.Clear();
-                Console.WriteLine("📝 Task Master");
-                Console.WriteLine("1. Add a todo");
-                Console.WriteLine("2. View all todos");
-                Console.WriteLine("0. Exit");
-                Console.Write("\nChoose an option: ");
+                output.WriteLine("📝 Task Master");
+                output.WriteLine("1. Add a task");
+                output.WriteLine("2. View all tasks");
+                output.WriteLine("3. Mark task as completed");
+                output.WriteLine("0. Exit");
+                output.Write("\nChoose an option: ");
 
-                string choice = Console.ReadLine() ?? "";
+                string choice = input.ReadLine() ?? "";
 
                 switch (choice)
                 {
                     case "1":
-                        AddTodoFlow(repository);
+                        AddTaskFlow(repository, input, output);
                         break;
                     case "2":
-                        ViewTodosFlow(repository);
+                        ViewTasksFlow(repository, output);
+                        break;
+                    case "3":
+                        MarkTaskCompletedFlow(repository, input, output);
                         break;
                     case "0":
                         exit = true;
                         break;
                     default:
-                        Console.WriteLine("Invalid option. Press Enter to continue...");
-                        Console.ReadLine();
+                        output.WriteLine("Invalid option. Press Enter to continue...");
+                        input.ReadLine();
                         break;
                 }
             }
         }
 
-        private static void AddTodoFlow(TodoRepository repository)
+        private static void AddTaskFlow(TodoRepository repository, TextReader input, TextWriter output)
         {
-            Console.Write("Enter todo title: ");
-            string title = Console.ReadLine() ?? "Untitled";
+            output.Write("Enter task title: ");
+            string title = input.ReadLine() ?? "Untitled";
 
-            var todo = new Todo(title);
-            repository.AddTodo(todo);
+            var task = new Todo(title);
+            repository.AddTodo(task);
 
-            Console.WriteLine("Todo added! Press Enter to continue...");
-            Console.ReadLine();
+            output.WriteLine("Task added! Press Enter to continue...");
+            input.ReadLine();
         }
 
-        private static void ViewTodosFlow(TodoRepository repository)
+        private static void ViewTasksFlow(TodoRepository repository, TextWriter output)
         {
             var todos = repository.GetAllTodos();
 
-            Console.WriteLine("\nYour Todos:");
-            foreach (var todo in todos)
+            output.WriteLine("\nYour Tasks:");
+            foreach (var task in todos)
             {
-                Console.WriteLine($"- {todo.Title}");
+                output.WriteLine($"- {task}");
             }
 
-            Console.WriteLine("\nPress Enter to continue...");
-            Console.ReadLine();
+            output.WriteLine("\nPress Enter to continue...");
+        }
+
+        private static void MarkTaskCompletedFlow(TodoRepository repository, TextReader input, TextWriter output)
+        {
+            ViewTasksFlow(repository, output);
+            output.Write("\nEnter the ID of the task to mark as completed: ");
+            string idInput = input.ReadLine() ?? "";
+
+            if (Guid.TryParse(idInput, out Guid id))
+            {
+                repository.MarkTodoAsCompleted(id);
+                output.WriteLine("Task marked as completed!");
+            }
+            else
+            {
+                output.WriteLine("Invalid ID format.");
+            }
+
+            output.WriteLine("Press Enter to continue...");
+            input.ReadLine();
         }
     }
 }
