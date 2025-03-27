@@ -12,7 +12,8 @@ namespace TaskMasterApp.Tests
         public void AddTodo_Should_Add_To_List()
         {
             // Arrange
-            var repo = new TodoRepository();
+            var fakeStorage = new FakeInMemoryStorage();
+            var repo = new TodoRepository(fakeStorage);
             var todo = new Todo("Test Todo");
 
             // Act
@@ -28,7 +29,8 @@ namespace TaskMasterApp.Tests
         public void MarkTodoAsCompleted_Should_Set_IsCompleted_To_True()
         {
             // Arrange
-            var repo = new TodoRepository();
+            var fakeStorage = new FakeInMemoryStorage();
+            var repo = new TodoRepository(fakeStorage);
             var todo = new Todo("Complete me");
             repo.AddTodo(todo);
 
