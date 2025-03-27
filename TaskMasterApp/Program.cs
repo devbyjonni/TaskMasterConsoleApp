@@ -1,4 +1,6 @@
 using System;
+using TaskMasterApp.Services;
+using TaskMasterApp.UI;
 
 namespace TaskMasterConsoleApp
 {
@@ -6,8 +8,8 @@ namespace TaskMasterConsoleApp
     {
         public static void Main()
         {
-            Console.WriteLine("Dotnet Console App is Running! 🚀");
+            var repository = new TodoRepository();
+            Menu.Start(repository, Console.In, Console.Out);
         }
     }
 }
-
