@@ -38,5 +38,6 @@ namespace TaskMasterApp.Tests
             // Assert
             Assert.True(repo.GetAllTodos().First().IsCompleted);
         }
+
     }
 }

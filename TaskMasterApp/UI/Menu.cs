@@ -28,7 +28,7 @@ namespace TaskMasterApp.UI
                         AddTaskFlow(repository, input, output);
                         break;
                     case "2":
-                        ViewTasksFlow(repository, output);
+                        ViewTasksFlow(repository, input, output);
                         break;
                     case "3":
                         MarkTaskCompletedFlow(repository, input, output);
@@ -56,22 +56,36 @@ namespace TaskMasterApp.UI
             input.ReadLine();
         }
 
-        private static void ViewTasksFlow(TodoRepository repository, TextWriter output)
+        public static void ViewTasksFlow(TodoRepository repository, TextReader input, TextWriter output)
         {
             var todos = repository.GetAllTodos();
 
             output.WriteLine("\nYour Tasks:");
-            foreach (var task in todos)
+            foreach (var todo in todos)
             {
-                output.WriteLine($"- {task}");
+                output.WriteLine($"- [{(todo.IsCompleted ? "x" : " ")}] {todo.Title} (ID: {todo.Id})");
             }
 
-            output.WriteLine("\nPress Enter to continue...");
+            output.WriteLine("\nEnter the ID of the task to mark as completed (or press Enter to skip): ");
+            string idInput = input.ReadLine()?.Trim();
+
+            if (Guid.TryParse(idInput, out Guid todoId))
+            {
+                repository.MarkTodoAsCompleted(todoId);
+                output.WriteLine("Task marked as completed!");
+            }
+            else if (!string.IsNullOrWhiteSpace(idInput))
+            {
+                output.WriteLine("Invalid ID format.");
+            }
+
+            output.WriteLine("\nPress Enter to return to menu...");
+            input.ReadLine();
         }
 
         private static void MarkTaskCompletedFlow(TodoRepository repository, TextReader input, TextWriter output)
         {
-            ViewTasksFlow(repository, output);
+            ViewTasksFlow(repository, input, output);
             output.Write("\nEnter the ID of the task to mark as completed: ");
             string idInput = input.ReadLine() ?? "";
 
