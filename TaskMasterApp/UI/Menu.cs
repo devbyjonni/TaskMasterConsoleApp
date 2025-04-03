@@ -16,6 +16,7 @@ namespace TaskMasterApp.UI
                 io.WriteLine("1. Add a task");
                 io.WriteLine("2. View all tasks");
                 io.WriteLine("3. Mark task as completed");
+                io.WriteLine("4. Remove a task");
                 io.WriteLine("0. Exit");
                 string choice = io.Prompt("\nChoose an option: ");
 
@@ -29,6 +30,9 @@ namespace TaskMasterApp.UI
                         break;
                     case "3":
                         MarkTaskCompletedFlow(repository, io);
+                        break;
+                    case "4":
+                        RemoveTaskFlow(repository, io);
                         break;
                     case "0":
                         exit = true;
@@ -47,7 +51,7 @@ namespace TaskMasterApp.UI
             repository.AddTodo(task);
 
             io.WriteSuccess(repository.LastStorageMessage);
-            io.WriteLine("New task:");
+            io.WriteLine("🆕 New task:");
             io.WriteSuccess($"- {task}");
             io.Pause("Task added! Press Enter to continue...");
 
@@ -98,7 +102,7 @@ namespace TaskMasterApp.UI
                 var completed = repository.GetAllTodos().FirstOrDefault(t => t.Id == todoId);
                 if (completed != null)
                 {
-                    io.WriteLine("Completed task:");
+                    io.WriteLine("✅ Completed task:");
                     io.WriteSuccess($"- {completed}");
                 }
             }
@@ -109,5 +113,47 @@ namespace TaskMasterApp.UI
 
             io.Pause("Press Enter to continue...");
         }
+
+        public static void RemoveTaskFlow(TodoRepository repository, UserInterface io)
+        {
+            var todos = repository.GetAllTodos();
+
+            io.WriteHeader("Your Tasks");
+            foreach (var todo in todos)
+            {
+                var display = $"- [{(todo.IsCompleted ? "x" : " ")}] {todo.Title} (ID: {todo.Id})";
+                if (todo.IsCompleted)
+                    io.WriteSuccess(display);
+                else
+                    io.WriteLine(display);
+            }
+
+            string idInput = io.Prompt("\nEnter the ID of the task to remove: ");
+
+            if (Guid.TryParse(idInput, out Guid todoId))
+            {
+                var toRemove = todos.FirstOrDefault(t => t.Id == todoId);
+                repository.RemoveTodo(todoId);
+
+                if (toRemove != null)
+                {
+                    io.WriteSuccess(repository.LastStorageMessage);
+                    io.WriteSuccess("Removed task:");
+                    io.WriteLine($"🗑️  {toRemove}");
+
+                }
+                else
+                {
+                    io.WriteError("Task not found.");
+                }
+            }
+            else
+            {
+                io.WriteError("Invalid ID format.");
+            }
+
+            io.Pause("Press Enter to continue...");
+        }
+
     }
 }
