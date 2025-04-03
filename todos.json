@@ -4,47 +4,5 @@
     "Title": "Workout",
     "IsCompleted": true,
     "DueDate": null
-  },
-  {
-    "Id": "a2189dcf-2fb9-4788-8606-69daf12689fd",
-    "Title": "",
-    "IsCompleted": false,
-    "DueDate": null
-  },
-  {
-    "Id": "6ce68f07-6232-4ab1-843c-3868dd8fcbe4",
-    "Title": "Do some stretching.",
-    "IsCompleted": true,
-    "DueDate": null
-  },
-  {
-    "Id": "52b747de-b1a6-42e4-be04-b1c1eeeea45d",
-    "Title": "Make some coffe.",
-    "IsCompleted": true,
-    "DueDate": null
-  },
-  {
-    "Id": "33bf43fc-9ac5-4324-886f-48d1175f44bf",
-    "Title": "add some good love to the world.",
-    "IsCompleted": true,
-    "DueDate": null
-  },
-  {
-    "Id": "d02031b5-241e-4529-8d5a-708265fa4906",
-    "Title": "show some love.",
-    "IsCompleted": true,
-    "DueDate": null
-  },
-  {
-    "Id": "b9c45c91-0444-4ee7-bbed-87708e4194d3",
-    "Title": "Go to sleep.",
-    "IsCompleted": false,
-    "DueDate": null
-  },
-  {
-    "Id": "378063b0-878d-4eed-9844-5bfdf805aded",
-    "Title": "Fix my readme.md",
-    "IsCompleted": false,
-    "DueDate": null
   }
 ]

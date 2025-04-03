@@ -1,117 +1,95 @@
 # 📝 TaskMasterConsoleApp
 
-A simple, testable console app for managing todos — built as part of my .NET education.
+A simple and testable console-based Todo list manager built with .NET.
 
 ---
 
-## 👋 About Me
+## 📌 Overview
 
-Hi, I’m **Jonni Åkesson**. I come from an iOS background, and this is one of my first real .NET projects. I wanted to focus on structure, clean code, and testing — and this app was a great way to explore that.
+TaskMasterConsoleApp is a C# console application that allows users to:
 
----
+- ✅ Add, view, update, complete, and remove tasks
+- ✅ Optionally assign due dates
+- ✅ View tasks sorted by due date
+- ✅ See clear, color-coded feedback in the console
 
-## 🧠 Planning First
-
-Before writing any code, I focused on structure and flow.  
-I used ChatGPT to help me:
-
-- Break down the user story
-- Plan out folders, classes, and naming
-- Stay focused on testability and separation of concerns
-
-This early planning helped the code stay maintainable and clear as the app grew.
+The app uses clean architecture with separation of concerns, dependency injection, and full xUnit test coverage.
 
 ---
 
-## 🧩 Project Overview
-
-### ✅ Features
-- Add, view, update, complete, and remove tasks
-- Optional due dates, sorted automatically
-- Color-coded feedback in the console (✅ green, ❌ red, 🗑️ trash)
-- Unit-tested with xUnit and fake in-memory storage
-
-### 📂 Structure
+## 🧩 Project Structure
 
 ```
 /TaskMasterConsoleApp
-├── Models/          // The Todo domain model
-├── Services/        // Business logic (TodoRepository)
-├── Data/            // Storage interface + JSON file storage
-├── UI/              // Console interaction (Menu + UserInterface)
-├── Tests/           // xUnit test project
-├── todos.json       // Default local storage
-└── Program.cs       // App entry point
+├── Models/          # The Todo model
+├── Services/        # Business logic (TodoRepository)
+├── Data/            # Storage abstraction and implementation (ITodoStorage + JsonTodoStorage)
+├── UI/              # Console UI (Menu + UserInterface)
+├── Tests/           # Unit tests using xUnit
+├── docs/            # UML diagram and assets
+├── todos.json       # Local task storage
+└── Program.cs       # Application entry point
 ```
-
----
-
-## 🧪 Technologies & Concepts
-
-- C# with .NET 8
-- LINQ
-- System.Text.Json for file storage
-- Interfaces & abstraction
-- Console UI with injected I/O
-- Unit testing with xUnit
-- Git, GitHub, and pull request workflow
 
 ---
 
 ## 🔍 UML Diagram
 
-This diagram shows the architecture and how classes interact:
-
-📎 `docs/uml-taskmaster.png` (embed or link to your UML image here)
-
-- `Menu` handles UI logic and user flows
-- `TodoRepository` coordinates data operations
-- `ITodoStorage` abstracts saving/loading
-- `JsonTodoStorage` is one implementation (can be swapped)
-- `UserInterface` encapsulates all console I/O for better testability
+![UML Diagram](docs/uml-taskmaster.png)
 
 ---
 
-## 🧠 Reflections
+## ⚙️ Features
 
-### What I learned:
-- Real-world structure matters as much as getting it to work.
-- Abstractions, interfaces, and loose coupling really pay off later.
-- Writing tests early helps guide clean code.
-
-### What I’d improve next:
-- Add a database option like SQLite via another `ITodoStorage` implementation
-- Add filtering or searching
-- Maybe build a minimal UI or web front-end
-
----
-
-## 🙋 Presentation Notes
-
-I’ll cover:
-- My planning process using ChatGPT
-- Key design decisions (repo pattern, I/O abstraction, test setup)
-- A demo of the core features
-- What I’ve learned from this project and the course
+- [x] Add task (with optional due date)
+- [x] View tasks (sorted by due date)
+- [x] Mark task as completed
+- [x] Update task title
+- [x] Remove task
+- [x] Color-coded feedback (green for success, red for errors)
+- [x] Console-based user interface
+- [x] JSON-based storage with easy swap-out interface
+- [x] Fully unit-tested (using xUnit)
 
 ---
 
-## ✅ Run Locally
+## 💡 Design Principles
+
+- **Separation of Concerns**: Logic, UI, and data layers are isolated.
+- **Dependency Injection**: Storage and I/O are injected for flexibility and testability.
+- **Repository Pattern**: Abstracts data access for easier refactoring.
+- **Interface-Based Design**: Makes components modular and swappable.
+- **Testability**: Core logic is tested using fake in-memory storage.
+
+---
+
+## 🧪 Testing
+
+- Uses `xUnit` to test repository and UI logic
+- Fake storage implementation ensures tests don’t touch the file system
+- Tests verify task creation, completion, update, removal, and sorting
 
 ```bash
-# Build & run the app
-dotnet run --project TaskMasterApp
-
-# Run tests
 dotnet test --logger:"console;verbosity=detailed"
 ```
 
 ---
 
-## 🤝 Thanks for reviewing
+## 🚀 Run Locally
 
-This was more than a coding exercise — it was a learning experience.  
-Built with care, tested with purpose, and always ready to grow. 🙌
+```bash
+# Clean & build
+dotnet clean && dotnet build
+
+# Run the app
+dotnet run --project TaskMasterApp
 ```
 
 ---
+
+## 📂 Storage Format
+
+Tasks are saved in a local `todos.json` file using `System.Text.Json`. The file path can be configured through `JsonTodoStorage`.
+
+---
+

@@ -134,7 +134,7 @@ namespace TaskMasterApp.UI
         }
 
         /// <summary>
-        /// Removes a task by its ID and shows a confirmation with trash emoji.
+        /// Removes a task by its ID and shows a confirmation.
         /// </summary>
         public static void RemoveTaskFlow(TodoRepository repository, UserInterface io)
         {
