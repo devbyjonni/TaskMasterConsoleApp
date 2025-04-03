@@ -15,7 +15,7 @@ namespace TaskMasterConsoleApp
             var io = new UserInterface(Console.In, Console.Out);
 
             // Show where data is being saved
-            io.WriteLine($"[Data] Saving todos at: {storage.FilePath}");
+            io.WriteSuccess($"[Data] Saving todos at: {storage.FilePath}");
 
             // Start the app
             Menu.Start(repository, io);

@@ -35,5 +35,21 @@ namespace TaskMasterApp.UI
         {
             _output.WriteLine($"\n=== {title} ===");
         }
+
+        public void WriteSuccess(string message)
+        {
+            var previousColor = Console.ForegroundColor;
+            Console.ForegroundColor = ConsoleColor.Green;
+            _output.WriteLine(message);
+            Console.ForegroundColor = previousColor;
+        }
+
+        public void WriteError(string message)
+        {
+            var previousColor = Console.ForegroundColor;
+            Console.ForegroundColor = ConsoleColor.Red;
+            _output.WriteLine(message);
+            Console.ForegroundColor = previousColor;
+        }
     }
 }
