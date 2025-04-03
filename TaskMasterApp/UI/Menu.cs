@@ -74,7 +74,7 @@ namespace TaskMasterApp.UI
 
         }
 
-        private static void MarkTaskCompletedFlow(TodoRepository repository, UserInterface io)
+        public static void MarkTaskCompletedFlow(TodoRepository repository, UserInterface io)
         {
             var todos = repository.GetAllTodos();
 

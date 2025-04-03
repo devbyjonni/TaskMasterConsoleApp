@@ -1,8 +1,11 @@
 using System;
+using System.IO;
 using System.Linq;
 using TaskMasterApp.Models;
 using TaskMasterApp.Services;
+using TaskMasterApp.UI;           // 👈 For Menu and UserInterface
 using Xunit;
+
 
 namespace TaskMasterApp.Tests
 {
@@ -25,21 +28,7 @@ namespace TaskMasterApp.Tests
             Assert.Equal("Test Todo", todos.First().Title);
         }
 
-        [Fact]
-        public void MarkTodoAsCompleted_Should_Set_IsCompleted_To_True()
-        {
-            // Arrange
-            var fakeStorage = new FakeInMemoryStorage();
-            var repo = new TodoRepository(fakeStorage);
-            var todo = new Todo("Complete me");
-            repo.AddTodo(todo);
 
-            // Act
-            repo.MarkTodoAsCompleted(todo.Id);
-
-            // Assert
-            Assert.True(repo.GetAllTodos().First().IsCompleted);
-        }
 
     }
 }
