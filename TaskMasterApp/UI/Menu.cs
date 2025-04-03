@@ -17,6 +17,7 @@ namespace TaskMasterApp.UI
                 io.WriteLine("2. View all tasks");
                 io.WriteLine("3. Mark task as completed");
                 io.WriteLine("4. Remove a task");
+                io.WriteLine("5. Update a task");
                 io.WriteLine("0. Exit");
                 string choice = io.Prompt("\nChoose an option: ");
 
@@ -33,6 +34,9 @@ namespace TaskMasterApp.UI
                         break;
                     case "4":
                         RemoveTaskFlow(repository, io);
+                        break;
+                    case "5":
+                        UpdateTaskFlow(repository, io);
                         break;
                     case "0":
                         exit = true;
@@ -155,5 +159,45 @@ namespace TaskMasterApp.UI
             io.Pause("Press Enter to continue...");
         }
 
+        public static void UpdateTaskFlow(TodoRepository repository, UserInterface io)
+        {
+            var todos = repository.GetAllTodos();
+
+            io.WriteHeader("Your Tasks");
+            foreach (var todo in todos)
+            {
+                var display = $"- [{(todo.IsCompleted ? "x" : " ")}] {todo.Title} (ID: {todo.Id})";
+                if (todo.IsCompleted)
+                    io.WriteSuccess(display);
+                else
+                    io.WriteLine(display);
+            }
+
+            string idInput = io.Prompt("\nEnter the ID of the task to update: ");
+
+            if (Guid.TryParse(idInput, out Guid todoId))
+            {
+                var toUpdate = todos.FirstOrDefault(t => t.Id == todoId);
+                if (toUpdate != null)
+                {
+                    string newTitle = io.Prompt($"Enter new title for '{toUpdate.Title}': ");
+                    repository.UpdateTodo(todoId, newTitle);
+
+                    io.WriteSuccess(repository.LastStorageMessage);
+                    io.WriteSuccess("Updated task:");
+                    io.WriteSuccess($"✏️  - {toUpdate}");
+                }
+                else
+                {
+                    io.WriteError("Task not found.");
+                }
+            }
+            else
+            {
+                io.WriteError("Invalid ID format.");
+            }
+
+            io.Pause("Press Enter to continue...");
+        }
     }
 }
