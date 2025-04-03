@@ -45,8 +45,11 @@ namespace TaskMasterApp.UI
             string title = io.Prompt("Enter task title: ");
             var task = new Todo(title);
             repository.AddTodo(task);
+
+            io.WriteLine(repository.LastStorageMessage);
             io.Pause("Task added! Press Enter to continue...");
         }
+
 
         public static void ViewTasksFlow(TodoRepository repository, UserInterface io)
         {

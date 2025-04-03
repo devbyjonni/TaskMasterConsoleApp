@@ -22,14 +22,16 @@ namespace TaskMasterApp.Tests
             // Simulate user entering the ID of the task and pressing enter again to continue
             var input = new StringReader($"{todo.Id}\n\n");
             var output = new StringWriter();
+            var io = new UserInterface(input, output);
 
             // Act
-            Menu.ViewTasksFlow(repo, input, output);
+            Menu.ViewTasksFlow(repo, io);
 
             // Assert
             Assert.True(repo.GetAllTodos().First().IsCompleted);
             string result = output.ToString();
             Assert.Contains("Task marked as completed!", result);
         }
+
     }
 }

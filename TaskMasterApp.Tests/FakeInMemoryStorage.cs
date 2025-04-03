@@ -1,21 +1,24 @@
 using System.Collections.Generic;
-using TaskMasterApp.Data;
 using TaskMasterApp.Models;
+using TaskMasterApp.Data;
 
 namespace TaskMasterApp.Tests
 {
     public class FakeInMemoryStorage : ITodoStorage
     {
-        public List<Todo> StoredTodos { get; private set; } = new();
+        private List<Todo> _storage = new List<Todo>();
 
-        public List<Todo> LoadTodos()
+        public List<Todo> LoadTodos(out string message)
         {
-            return StoredTodos;
+            message = "Loaded todos from fake in-memory storage.";
+            return _storage;
         }
 
-        public void SaveTodos(List<Todo> todos)
+        public bool SaveTodos(List<Todo> todos, out string message)
         {
-            StoredTodos = new List<Todo>(todos); // simulate saving
+            _storage = new List<Todo>(todos);
+            message = "Saved todos to fake in-memory storage.";
+            return true;
         }
     }
 }

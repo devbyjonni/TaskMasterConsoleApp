@@ -8,17 +8,20 @@ namespace TaskMasterApp.Services
     {
         private readonly List<Todo> _todos;
         private readonly ITodoStorage _storage;
+        public string LastStorageMessage { get; private set; }
 
         public TodoRepository(ITodoStorage storage)
         {
             _storage = storage;
-            _todos = _storage.LoadTodos();
+            _todos = _storage.LoadTodos(out var message);
+            LastStorageMessage = message;
         }
 
         public void AddTodo(Todo todo)
         {
             _todos.Add(todo);
-            _storage.SaveTodos(_todos);
+            _storage.SaveTodos(_todos, out var message);
+            LastStorageMessage = message;
         }
 
         public List<Todo> GetAllTodos() => _todos;
@@ -29,8 +32,10 @@ namespace TaskMasterApp.Services
             if (todo != null)
             {
                 todo.IsCompleted = true;
-                _storage.SaveTodos(_todos);
+                _storage.SaveTodos(_todos, out var message);
+                LastStorageMessage = message;
             }
         }
     }
+
 }
