@@ -46,8 +46,11 @@ namespace TaskMasterApp.UI
             var task = new Todo(title);
             repository.AddTodo(task);
 
-            io.WriteLine(repository.LastStorageMessage);
+            io.WriteSuccess(repository.LastStorageMessage);
+            io.WriteLine("New task:");
+            io.WriteSuccess($"- {task}");
             io.Pause("Task added! Press Enter to continue...");
+
         }
 
 
@@ -58,37 +61,50 @@ namespace TaskMasterApp.UI
             io.WriteHeader("Your Tasks");
             foreach (var todo in todos)
             {
-                io.WriteLine($"- [{(todo.IsCompleted ? "x" : " ")}] {todo.Title} (ID: {todo.Id})");
+                var display = $"- [{(todo.IsCompleted ? "x" : " ")}] {todo.Title} (ID: {todo.Id})";
+
+                if (todo.IsCompleted)
+                    io.WriteSuccess(display); // ✅ green!
+                else
+                    io.WriteLine(display); // normal
             }
 
-            string idInput = io.Prompt("\nEnter the ID of the task to mark as completed (or press Enter to skip): ");
-
-            if (Guid.TryParse(idInput, out Guid todoId))
-            {
-                repository.MarkTodoAsCompleted(todoId);
-                io.WriteLine("Task marked as completed!");
-            }
-            else if (!string.IsNullOrWhiteSpace(idInput))
-            {
-                io.WriteLine("Invalid ID format.");
-            }
 
             io.Pause("\nPress Enter to return to menu...");
+
         }
 
         private static void MarkTaskCompletedFlow(TodoRepository repository, UserInterface io)
         {
-            ViewTasksFlow(repository, io);
+            var todos = repository.GetAllTodos();
+
+            io.WriteHeader("Your Tasks");
+            foreach (var todo in todos)
+            {
+                var display = $"- [{(todo.IsCompleted ? "x" : " ")}] {todo.Title} (ID: {todo.Id})";
+                if (todo.IsCompleted)
+                    io.WriteSuccess(display);
+                else
+                    io.WriteLine(display);
+            }
+
             string idInput = io.Prompt("\nEnter the ID of the task to mark as completed: ");
 
-            if (Guid.TryParse(idInput, out Guid id))
+            if (Guid.TryParse(idInput, out Guid todoId))
             {
-                repository.MarkTodoAsCompleted(id);
-                io.WriteLine("Task marked as completed!");
+                repository.MarkTodoAsCompleted(todoId);
+                io.WriteSuccess(repository.LastStorageMessage);
+
+                var completed = repository.GetAllTodos().FirstOrDefault(t => t.Id == todoId);
+                if (completed != null)
+                {
+                    io.WriteLine("Completed task:");
+                    io.WriteSuccess($"- {completed}");
+                }
             }
-            else
+            else if (!string.IsNullOrWhiteSpace(idInput))
             {
-                io.WriteLine("Invalid ID format.");
+                io.WriteError("Invalid ID format.");
             }
 
             io.Pause("Press Enter to continue...");

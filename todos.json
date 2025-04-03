@@ -22,5 +22,35 @@
     "Title": "Yoga",
     "IsCompleted": false,
     "DueDate": null
+  },
+  {
+    "Id": "6ce68f07-6232-4ab1-843c-3868dd8fcbe4",
+    "Title": "Yoga",
+    "IsCompleted": true,
+    "DueDate": null
+  },
+  {
+    "Id": "52b747de-b1a6-42e4-be04-b1c1eeeea45d",
+    "Title": "Make some coffe.",
+    "IsCompleted": true,
+    "DueDate": null
+  },
+  {
+    "Id": "a7a1379b-d1f3-48d4-904a-c91817694803",
+    "Title": "drink a beer.",
+    "IsCompleted": true,
+    "DueDate": null
+  },
+  {
+    "Id": "33bf43fc-9ac5-4324-886f-48d1175f44bf",
+    "Title": "add some good love to the world.",
+    "IsCompleted": true,
+    "DueDate": null
+  },
+  {
+    "Id": "d02031b5-241e-4529-8d5a-708265fa4906",
+    "Title": "show some love.",
+    "IsCompleted": true,
+    "DueDate": null
   }
 ]
