@@ -5,8 +5,15 @@ using TaskMasterApp.Services;
 
 namespace TaskMasterApp.UI
 {
+    /// <summary>
+    /// Handles all user interaction flows through a menu-based console UI.
+    /// Each case delegates to a task-specific operation (Add, View, Complete, etc.).
+    /// </summary>
     public static class Menu
     {
+        /// <summary>
+        /// Displays the main menu and routes input to task flows.
+        /// </summary>
         public static void Start(TodoRepository repository, UserInterface io)
         {
             bool exit = false;
@@ -20,35 +27,26 @@ namespace TaskMasterApp.UI
                 io.WriteLine("4. Remove a task");
                 io.WriteLine("5. Update a task");
                 io.WriteLine("0. Exit");
+
                 string choice = io.Prompt("\nChoose an option: ");
 
                 switch (choice)
                 {
-                    case "1":
-                        AddTaskFlow(repository, io);
-                        break;
-                    case "2":
-                        ViewTasksFlow(repository, io);
-                        break;
-                    case "3":
-                        MarkTaskCompletedFlow(repository, io);
-                        break;
-                    case "4":
-                        RemoveTaskFlow(repository, io);
-                        break;
-                    case "5":
-                        UpdateTaskFlow(repository, io);
-                        break;
-                    case "0":
-                        exit = true;
-                        break;
-                    default:
-                        io.Pause("Invalid option. Press Enter to continue...");
-                        break;
+                    case "1": AddTaskFlow(repository, io); break;
+                    case "2": ViewTasksFlow(repository, io); break;
+                    case "3": MarkTaskCompletedFlow(repository, io); break;
+                    case "4": RemoveTaskFlow(repository, io); break;
+                    case "5": UpdateTaskFlow(repository, io); break;
+                    case "0": exit = true; break;
+                    default: io.Pause("Invalid option. Press Enter to continue..."); break;
                 }
             }
         }
 
+        /// <summary>
+        /// Prompts the user to enter a task title and optional due date.
+        /// Saves the task to the repository and shows a confirmation.
+        /// </summary>
         private static void AddTaskFlow(TodoRepository repository, UserInterface io)
         {
             string title = io.Prompt("Enter task title: ");
@@ -67,6 +65,10 @@ namespace TaskMasterApp.UI
             io.Pause("Task added! Press Enter to continue...");
         }
 
+        /// <summary>
+        /// Displays all tasks sorted by due date (earliest first).
+        /// Completed tasks are shown in green with checkmarks.
+        /// </summary>
         public static void ViewTasksFlow(TodoRepository repository, UserInterface io)
         {
             var todos = repository.GetAllTodos()
@@ -88,6 +90,9 @@ namespace TaskMasterApp.UI
             io.Pause("\nPress Enter to return to menu...");
         }
 
+        /// <summary>
+        /// Marks a task as completed by its GUID and confirms the action.
+        /// </summary>
         public static void MarkTaskCompletedFlow(TodoRepository repository, UserInterface io)
         {
             var todos = repository.GetAllTodos()
@@ -128,6 +133,9 @@ namespace TaskMasterApp.UI
             io.Pause("Press Enter to continue...");
         }
 
+        /// <summary>
+        /// Removes a task by its ID and shows a confirmation with trash emoji.
+        /// </summary>
         public static void RemoveTaskFlow(TodoRepository repository, UserInterface io)
         {
             var todos = repository.GetAllTodos()
@@ -172,6 +180,9 @@ namespace TaskMasterApp.UI
             io.Pause("Press Enter to continue...");
         }
 
+        /// <summary>
+        /// Updates the title of an existing task by ID and shows the updated result.
+        /// </summary>
         public static void UpdateTaskFlow(TodoRepository repository, UserInterface io)
         {
             var todos = repository.GetAllTodos()

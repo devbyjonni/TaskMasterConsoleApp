@@ -6,15 +6,27 @@ using TaskMasterApp.Models;
 
 namespace TaskMasterApp.Data
 {
+    /// <summary>
+    /// JSON-based implementation of ITodoStorage.
+    /// Handles reading and writing todos to a local .json file.
+    /// </summary>
     public class JsonTodoStorage : ITodoStorage
     {
         private readonly string _filePath;
 
+        /// <summary>
+        /// Sets the file path for JSON persistence.
+        /// Defaults to "todos.json" in the working directory.
+        /// </summary>
         public JsonTodoStorage(string filePath = "todos.json")
         {
             _filePath = filePath;
         }
 
+        /// <summary>
+        /// Attempts to load todos from disk.
+        /// Handles deserialization and returns a fallback list on error.
+        /// </summary>
         public List<Todo> LoadTodos(out string message)
         {
             try
@@ -38,6 +50,10 @@ namespace TaskMasterApp.Data
             }
         }
 
+        /// <summary>
+        /// Attempts to serialize and write todos to disk.
+        /// Logs success or error message to the caller.
+        /// </summary>
         public bool SaveTodos(List<Todo> todos, out string message)
         {
             try
@@ -54,7 +70,10 @@ namespace TaskMasterApp.Data
             }
         }
 
-        // ✅ This goes *outside* the SaveTodos method
+        /// <summary>
+        /// Exposes the file path used for saving/loading todos.
+        /// Useful for debugging or UI display.
+        /// </summary>
         public string FilePath => _filePath;
     }
 }
