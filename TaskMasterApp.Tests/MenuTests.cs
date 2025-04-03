@@ -64,6 +64,38 @@ namespace TaskMasterApp.Tests
             Assert.Contains("✏️", result);
         }
 
+        [Fact]
+        public void ViewTasksFlow_Should_Display_Tasks_Sorted_By_DueDate()
+        {
+            // Arrange
+            var fakeStorage = new FakeInMemoryStorage();
+            var repo = new TodoRepository(fakeStorage);
+
+            var task1 = new Todo("Task with later due date", DateTime.Now.AddDays(5));
+            var task2 = new Todo("Task with earlier due date", DateTime.Now.AddDays(1));
+            var task3 = new Todo("Task without due date");
+
+            repo.AddTodo(task1);
+            repo.AddTodo(task2);
+            repo.AddTodo(task3);
+
+            var input = new StringReader("\n"); // simulate pressing Enter to return to menu
+            var output = new StringWriter();
+            var io = new UserInterface(input, output);
+
+            // Act
+            Menu.ViewTasksFlow(repo, io);
+
+            // Assert: check the order of tasks in the output
+            var result = output.ToString();
+
+            var indexTask2 = result.IndexOf(task2.Title);
+            var indexTask1 = result.IndexOf(task1.Title);
+            var indexTask3 = result.IndexOf(task3.Title);
+
+            Assert.True(indexTask2 < indexTask1, "Earlier due date should appear before later due date");
+            Assert.True(indexTask1 < indexTask3, "Tasks without due date should appear last");
+        }
 
     }
 }

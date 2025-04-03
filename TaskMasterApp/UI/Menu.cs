@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using TaskMasterApp.Models;
 using TaskMasterApp.Services;
 
@@ -51,45 +52,54 @@ namespace TaskMasterApp.UI
         private static void AddTaskFlow(TodoRepository repository, UserInterface io)
         {
             string title = io.Prompt("Enter task title: ");
-            var task = new Todo(title);
+            string dueInput = io.Prompt("Enter due date (yyyy-mm-dd) or leave empty: ");
+
+            DateTime? dueDate = null;
+            if (DateTime.TryParse(dueInput, out var parsedDate))
+                dueDate = parsedDate;
+
+            var task = new Todo(title, dueDate);
             repository.AddTodo(task);
 
             io.WriteSuccess(repository.LastStorageMessage);
             io.WriteLine("🆕 New task:");
             io.WriteSuccess($"- {task}");
             io.Pause("Task added! Press Enter to continue...");
-
         }
-
 
         public static void ViewTasksFlow(TodoRepository repository, UserInterface io)
         {
-            var todos = repository.GetAllTodos();
+            var todos = repository.GetAllTodos()
+                .OrderBy(t => t.DueDate ?? DateTime.MaxValue)
+                .ToList();
 
             io.WriteHeader("Your Tasks");
             foreach (var todo in todos)
             {
-                var display = $"- [{(todo.IsCompleted ? "x" : " ")}] {todo.Title} (ID: {todo.Id})";
+                var due = todo.DueDate.HasValue ? $" (Due: {todo.DueDate:yyyy-MM-dd})" : "";
+                var display = $"- [{(todo.IsCompleted ? "x" : " ")}] {todo.Title}{due} (ID: {todo.Id})";
 
                 if (todo.IsCompleted)
-                    io.WriteSuccess(display); // ✅ green!
+                    io.WriteSuccess(display);
                 else
-                    io.WriteLine(display); // normal
+                    io.WriteLine(display);
             }
 
-
             io.Pause("\nPress Enter to return to menu...");
-
         }
 
         public static void MarkTaskCompletedFlow(TodoRepository repository, UserInterface io)
         {
-            var todos = repository.GetAllTodos();
+            var todos = repository.GetAllTodos()
+                .OrderBy(t => t.DueDate ?? DateTime.MaxValue)
+                .ToList();
 
             io.WriteHeader("Your Tasks");
             foreach (var todo in todos)
             {
-                var display = $"- [{(todo.IsCompleted ? "x" : " ")}] {todo.Title} (ID: {todo.Id})";
+                var due = todo.DueDate.HasValue ? $" (Due: {todo.DueDate:yyyy-MM-dd})" : "";
+                var display = $"- [{(todo.IsCompleted ? "x" : " ")}] {todo.Title}{due} (ID: {todo.Id})";
+
                 if (todo.IsCompleted)
                     io.WriteSuccess(display);
                 else
@@ -120,12 +130,16 @@ namespace TaskMasterApp.UI
 
         public static void RemoveTaskFlow(TodoRepository repository, UserInterface io)
         {
-            var todos = repository.GetAllTodos();
+            var todos = repository.GetAllTodos()
+                .OrderBy(t => t.DueDate ?? DateTime.MaxValue)
+                .ToList();
 
             io.WriteHeader("Your Tasks");
             foreach (var todo in todos)
             {
-                var display = $"- [{(todo.IsCompleted ? "x" : " ")}] {todo.Title} (ID: {todo.Id})";
+                var due = todo.DueDate.HasValue ? $" (Due: {todo.DueDate:yyyy-MM-dd})" : "";
+                var display = $"- [{(todo.IsCompleted ? "x" : " ")}] {todo.Title}{due} (ID: {todo.Id})";
+
                 if (todo.IsCompleted)
                     io.WriteSuccess(display);
                 else
@@ -144,7 +158,6 @@ namespace TaskMasterApp.UI
                     io.WriteSuccess(repository.LastStorageMessage);
                     io.WriteSuccess("Removed task:");
                     io.WriteLine($"🗑️  {toRemove}");
-
                 }
                 else
                 {
@@ -161,12 +174,16 @@ namespace TaskMasterApp.UI
 
         public static void UpdateTaskFlow(TodoRepository repository, UserInterface io)
         {
-            var todos = repository.GetAllTodos();
+            var todos = repository.GetAllTodos()
+                .OrderBy(t => t.DueDate ?? DateTime.MaxValue)
+                .ToList();
 
             io.WriteHeader("Your Tasks");
             foreach (var todo in todos)
             {
-                var display = $"- [{(todo.IsCompleted ? "x" : " ")}] {todo.Title} (ID: {todo.Id})";
+                var due = todo.DueDate.HasValue ? $" (Due: {todo.DueDate:yyyy-MM-dd})" : "";
+                var display = $"- [{(todo.IsCompleted ? "x" : " ")}] {todo.Title}{due} (ID: {todo.Id})";
+
                 if (todo.IsCompleted)
                     io.WriteSuccess(display);
                 else
