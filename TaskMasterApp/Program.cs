@@ -9,11 +9,16 @@ namespace TaskMasterConsoleApp
     {
         public static void Main()
         {
-
+            // Setup dependencies
             var storage = new JsonTodoStorage();
             var repository = new TodoRepository(storage);
-            Menu.Start(repository, Console.In, Console.Out);
+            var io = new UserInterface(Console.In, Console.Out);
 
+            // Show where data is being saved
+            io.WriteLine($"[Data] Saving todos at: {storage.FilePath}");
+
+            // Start the app
+            Menu.Start(repository, io);
         }
     }
 }
