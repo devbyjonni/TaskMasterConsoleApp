@@ -36,5 +36,34 @@ namespace TaskMasterApp.Tests
             Assert.Contains(todo.Title, result);
         }
 
+        [Fact]
+        public void UpdateTaskFlow_Should_Update_Title_And_Show_Confirmation()
+        {
+            // Arrange
+            var fakeStorage = new FakeInMemoryStorage();
+            var repo = new TodoRepository(fakeStorage);
+            var originalTodo = new Todo("Old Title");
+            repo.AddTodo(originalTodo);
+
+            // Simulate user: enter task ID, then new title, then press Enter to continue
+            var input = new StringReader($"{originalTodo.Id}\nNew Title\n\n");
+            var output = new StringWriter();
+            var io = new UserInterface(input, output);
+
+            // Act
+            Menu.UpdateTaskFlow(repo, io);
+
+            // Assert
+            var updatedTodo = repo.GetAllTodos().FirstOrDefault(t => t.Id == originalTodo.Id);
+            Assert.NotNull(updatedTodo);
+            Assert.Equal("New Title", updatedTodo.Title);
+
+            var result = output.ToString();
+            Assert.Contains("Updated task:", result);
+            Assert.Contains("New Title", result);
+            Assert.Contains("✏️", result);
+        }
+
+
     }
 }

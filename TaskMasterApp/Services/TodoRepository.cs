@@ -51,5 +51,21 @@ namespace TaskMasterApp.Services
                 LastStorageMessage = "Task not found.";
             }
         }
+
+        public void UpdateTodo(Guid id, string newTitle)
+        {
+            var todo = _todos.FirstOrDefault(t => t.Id == id);
+            if (todo != null)
+            {
+                todo.Title = newTitle;
+                _storage.SaveTodos(_todos, out var message);
+                LastStorageMessage = message;
+            }
+            else
+            {
+                LastStorageMessage = "Task not found.";
+            }
+        }
+
     }
 }
