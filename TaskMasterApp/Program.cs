@@ -9,11 +9,11 @@ namespace TaskMasterConsoleApp
     {
         public static void Main()
         {
-
             var storage = new JsonTodoStorage();
             var repository = new TodoRepository(storage);
-            Menu.Start(repository, Console.In, Console.Out);
+            var io = new UserInterface(Console.In, Console.Out);
 
+            Menu.Start(repository, io);
         }
     }
 }
