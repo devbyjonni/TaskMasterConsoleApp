@@ -36,6 +36,20 @@ namespace TaskMasterApp.Services
                 LastStorageMessage = message;
             }
         }
-    }
 
+        public void RemoveTodo(Guid id)
+        {
+            var todo = _todos.FirstOrDefault(t => t.Id == id);
+            if (todo != null)
+            {
+                _todos.Remove(todo);
+                _storage.SaveTodos(_todos, out var message);
+                LastStorageMessage = message;
+            }
+            else
+            {
+                LastStorageMessage = "Task not found.";
+            }
+        }
+    }
 }

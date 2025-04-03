@@ -18,12 +18,6 @@
     "DueDate": null
   },
   {
-    "Id": "344f9e4d-d637-4cb9-9101-f68ad66c173d",
-    "Title": "Yoga",
-    "IsCompleted": false,
-    "DueDate": null
-  },
-  {
     "Id": "6ce68f07-6232-4ab1-843c-3868dd8fcbe4",
     "Title": "Yoga",
     "IsCompleted": true,
